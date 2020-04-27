@@ -4,6 +4,13 @@
     <meta charset="utf-8">
     <title>Bingo</title>
     <link rel="stylesheet" href="./res/styles.css">
+    <script type="text/javascript" src="./res/Loader.js"></script>
+    <script>
+      window.onload = async () => {
+        await Loader.init();
+        Loader.setup();
+      }
+    </script>
   </head>
   <body>
     <div id="navigation">
@@ -16,12 +23,12 @@
         <button class="btnControl cGame" id="btnDrawNumber" style="display:none">Draw number</button>
         <button class="btnControl cGame" id="btnSwitchDirection" style="display:none">Switch direction</button>
         <button class="btnControl cGame" id="btnSwitchView" style="display:none">Switch view</button>
-        <!--General purpos buttons-->
-        <button class="btnControl" id="btnModeChange">Change mode</button>
+        <!--General purpose buttons-->
+        <button class="btnControl" id="btnChangeMode">Change mode</button>
       </div>
-      <input id="inpID" type="number" min=0 max=100000000000000 placeholder="ID"/>
+      <input class="cTicket" id="inpID" type="number" min=0 max=100000000000000 placeholder="ID"/>
     </div>
 
-    <canvas id="cvsMain></canvas>
+    <canvas id="cvsMain"></canvas>
   </body>
 </html>
