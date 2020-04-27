@@ -15,7 +15,7 @@ class Loader
       window.CVS_MAIN = document.getElementById('cvsMain');
       window.CTX_MAIN = CVS_MAIN.getContext('2d');
       window.MODES = ['Ticket', 'Game'];
-      window.ACTIVE_MODE = MODES[1];
+      window.ACTIVE_MODE = MODES[0];
       resolve();
     })
   }
