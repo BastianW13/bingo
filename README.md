@@ -1,2 +1,2 @@
 # bingo
-Small website for creating tickets and to play a game of bingo.
+Small website for creating tickets and playing a game of bingo.
