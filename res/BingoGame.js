@@ -1,0 +1,7 @@
+class BingoGame
+{
+  static output()
+  {
+
+  }
+}
