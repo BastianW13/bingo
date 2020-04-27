@@ -39,6 +39,11 @@ body
   cursor: pointer;
 }
 
+#inpID
+{
+  text-align: center;
+}
+
 #inpID::-webkit-outer-spin-button,
 #inpID::-webkit-inner-spin-button
 {
