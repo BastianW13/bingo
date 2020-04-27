@@ -1,3 +1,4 @@
+/*General site settings*/
 html
 {
   margin: 0;
@@ -10,6 +11,7 @@ body
   overflow: hidden;
 }
 
+/*Interactive structures*/
 #navigation
 {
   z-index: 1;
@@ -28,7 +30,7 @@ body
   display: flex;
 }
 
-.control
+.btnControl
 {
   flex: 1;
   border-radius: 10px;
@@ -37,6 +39,13 @@ body
   cursor: pointer;
 }
 
+#inpID::-webkit-outer-spin-button,
+#inpID::-webkit-inner-spin-button
+{
+  -webkit-appearance: none;
+}
+
+/*Presentation structures*/
 #cvsMain
 {
   z-index: -1;
