@@ -7,6 +7,7 @@ class Loader
       this.addJS('./res/BingoTicket.js'),
       this.addJS('./res/BingoGame.js')
     ]);
+    BingoTicket.init();
   }
 
   static createGlobals()
@@ -14,6 +15,8 @@ class Loader
     return new Promise((resolve) => {
       window.CVS_MAIN = document.getElementById('cvsMain');
       window.CTX_MAIN = CVS_MAIN.getContext('2d');
+      CVS_MAIN.width = window.innerWidth;
+      CVS_MAIN.height = window.innerHeight;
       window.MODES = ['Ticket', 'Game'];
       window.ACTIVE_MODE = MODES[0];
       resolve();
@@ -44,6 +47,11 @@ class Loader
     window.onresize = () => {
       CVS_MAIN.width = window.innerWidth;
       CVS_MAIN.height = window.innerHeight;
+      if (ACTIVE_MODE === MODES[0])
+      {
+        BingoTicket.draw();
+        BingoTicket.output();
+      }
     }
   }
 
@@ -57,9 +65,20 @@ class Loader
     let btnDrawNumber = document.getElementById('btnDrawNumber');
     let btnSwitchDirection = document.getElementById('btnSwitchDirection');
     let btnSwitchView = document.getElementById('btnSwitchView');
-    // General purpose buttons
+    // General purpose
     let btnChangeMode = document.getElementById('btnChangeMode');
+    let inpID = document.getElementById('inpID');
 
+    btnNewTicket.onclick = () => {
+      if (inpID.checkValidity())
+      {
+        let id = BingoTicket.newTicket(inpID.value || null);
+        inpID.placeholder = "ID: " + id;
+      } else
+      {
+        alert('Not a valid ID');
+      }
+    }
 
     btnChangeMode.onclick = () => {
       let cTicket = document.getElementsByClassName('cTicket');
