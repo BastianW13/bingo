@@ -32,7 +32,6 @@ body
 
 .btnControl
 {
-  -webkit-appearance: none;
   flex: 1;
   border-radius: 10px;
   opacity: 0.5;
