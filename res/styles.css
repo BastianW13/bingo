@@ -15,7 +15,7 @@ body
 #navigation
 {
   z-index: 1;
-  height: 50px;
+  height: 10vh;
   width: 100vw;
   position: absolute;
   top: 0;
@@ -32,6 +32,7 @@ body
 
 .btnControl
 {
+  -webkit-appearance: none;
   flex: 1;
   border-radius: 10px;
   opacity: 0.5;
