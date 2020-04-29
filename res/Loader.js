@@ -16,6 +16,8 @@ class Loader
     return new Promise((resolve) => {
       window.CVS_MAIN = document.getElementById('cvsMain');
       window.CTX_MAIN = CVS_MAIN.getContext('2d');
+      CVS_MAIN.style.width = document.documentElement.clientWidth;
+      CVS_MAIN.style.height = document.documentElement.clientHeight;
       CVS_MAIN.width = document.documentElement.clientWidth;
       CVS_MAIN.height = document.documentElement.clientHeight;
       window.MODES = ['Ticket', 'Game'];
