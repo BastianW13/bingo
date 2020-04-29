@@ -43,6 +43,7 @@ class Loader
   {
     this.setupWindowEvents();
     this.setupButtonEvents();
+    this.setupMouseEvents();
   }
 
   static setupWindowEvents()
@@ -139,6 +140,31 @@ class Loader
         BingoTicket.output();
         ACTIVE_MODE = MODES[0];
       }
+    }
+  }
+
+  static setupMouseEvents()
+  {
+    CVS_MAIN.onclick = () => {
+      if (ACTIVE_MODE === MODES[0])
+      {
+
+      } else if (ACTIVE_MODE === MODES[1])
+      {
+        BingoGame.drawNumber();
+        BingoGame.output();
+      }
+    }
+    CVS_MAIN.ontouch = () => {
+      if (ACTIVE_MODE === MODES[0])
+      {
+
+      } else if (ACTIVE_MODE === MODES[1])
+      {
+        BingoGame.drawNumber();
+        BingoGame.output();
+      }
+
     }
   }
 }
