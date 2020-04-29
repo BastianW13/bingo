@@ -16,8 +16,8 @@ class Loader
     return new Promise((resolve) => {
       window.CVS_MAIN = document.getElementById('cvsMain');
       window.CTX_MAIN = CVS_MAIN.getContext('2d');
-      CVS_MAIN.width = window.innerWidth;
-      CVS_MAIN.height = window.innerHeight;
+      CVS_MAIN.width = document.documentElement.clientWidth;
+      CVS_MAIN.height = document.documentElement.clientHeight;
       window.MODES = ['Ticket', 'Game'];
       window.ACTIVE_MODE = MODES[0];
       resolve();
@@ -46,8 +46,8 @@ class Loader
   static setupWindowEvents()
   {
     window.onresize = () => {
-      CVS_MAIN.width = window.innerWidth;
-      CVS_MAIN.height = window.innerHeight;
+      CVS_MAIN.width = document.documentElement.clientWidth;
+      CVS_MAIN.height = document.documentElement.clientHeight;
       if (ACTIVE_MODE === MODES[0])
       {
         BingoTicket.draw();
