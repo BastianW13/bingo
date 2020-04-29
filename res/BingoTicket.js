@@ -1,16 +1,16 @@
-const settings =
+const settingsTicket =
 {
   textColor: 'rgb(200, 200, 200)',
   lineColor: 'rgb(255, 255, 255)',
   margin: 20,
-  xStart: () => {return settings.margin},
-  yStart: () => {return CVS_MAIN.height * 0.1 + settings.margin},
-  xStep: () => {return Math.floor((CVS_MAIN.width - 2 * settings.margin)/9)},
+  xStart: () => {return settingsTicket.margin},
+  yStart: () => {return CVS_MAIN.height * 0.1 + settingsTicket.margin},
+  xStep: () => {return Math.floor((CVS_MAIN.width - 2 * settingsTicket.margin)/9)},
   yStep: () => {
     return Math.floor(Math.min(
-      settings.xStep(),
-      (CVS_MAIN.height * 0.9 - 2 * settings.margin)/3))},
-  font: () => {return settings.yStep() *  3/5 + "px serif"},
+      settingsTicket.xStep(),
+      (CVS_MAIN.height * 0.9 - 2 * settingsTicket.margin)/3))},
+  font: () => {return settingsTicket.yStep() *  3/5 + "px serif"},
 }
 
 
@@ -21,8 +21,8 @@ class BingoTicket
     this.numbers = new Set();
     this.rows = [new Set(), new Set(), new Set()];
     this.buffer = document.createElement('canvas');
-    this.buffer.width = 9 * settings.xStep();
-    this.buffer.height = 3 * settings.yStep();
+    this.buffer.width = 9 * settingsTicket.xStep();
+    this.buffer.height = 3 * settingsTicket.yStep();
     this.bufferCtx = this.buffer.getContext('2d');
   }
 
@@ -148,16 +148,16 @@ class BingoTicket
   static draw()
   {
     if (this.numbers.size === 0) return;
-    let xStep = settings.xStep();
-    let yStep = settings.yStep();
+    let xStep = settingsTicket.xStep();
+    let yStep = settingsTicket.yStep();
     this.buffer.width = 9 * xStep;
     this.buffer.height = 3 * yStep;
     this.bufferCtx.clearRect(0, 0, this.buffer.width, this.buffer.height);
     this.drawGrid(xStep, yStep);
 
     this.bufferCtx.save();
-    this.bufferCtx.fillStyle = settings.textColor;
-    this.bufferCtx.font = settings.font();
+    this.bufferCtx.fillStyle = settingsTicket.textColor;
+    this.bufferCtx.font = settingsTicket.font();
     this.bufferCtx.textAlign = 'center';
     this.bufferCtx.textBaseline = 'middle';
     this.numbers.forEach(number => {
@@ -172,7 +172,7 @@ class BingoTicket
   static drawGrid(xStep, yStep)
   {
     this.bufferCtx.save();
-    this.bufferCtx.strokeStyle = settings.lineColor;
+    this.bufferCtx.strokeStyle = settingsTicket.lineColor;
     this.bufferCtx.beginPath();
     for (let i = 0; i < 10; i++)
     {
@@ -191,7 +191,7 @@ class BingoTicket
   static output()
   {
     CTX_MAIN.clearRect(0, 0, CVS_MAIN.width, CVS_MAIN.height);
-    CTX_MAIN.drawImage(this.buffer, settings.xStart(), settings.yStart());
+    CTX_MAIN.drawImage(this.buffer, settingsTicket.xStart(), settingsTicket.yStart());
   }
 }
 
