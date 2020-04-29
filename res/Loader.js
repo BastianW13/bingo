@@ -8,6 +8,7 @@ class Loader
       this.addJS('./res/BingoGame.js')
     ]);
     BingoTicket.init();
+    BingoGame.init();
   }
 
   static createGlobals()
@@ -51,6 +52,10 @@ class Loader
       {
         BingoTicket.draw();
         BingoTicket.output();
+      } else if (ACTIVE_MODE === MODES[1])
+      {
+        BingoGame.redraw();
+        BingoGame.output();
       }
     }
   }
@@ -78,6 +83,28 @@ class Loader
       {
         alert('Not a valid ID');
       }
+    }
+
+    btnNewGame.onclick = () => {
+      BingoGame.restart();
+      BingoGame.output();
+    }
+
+    btnDrawNumber.onclick = () => {
+      BingoGame.drawNumber();
+      BingoGame.output();
+    }
+
+    btnSwitchDirection.onclick = () => {
+      BingoGame.switchDirection();
+      BingoGame.redraw();
+      BingoGame.output();
+    }
+
+    btnSwitchView.onclick = () => {
+      BingoGame.switchMode();
+      BingoGame.redraw();
+      BingoGame.output();
     }
 
     btnChangeMode.onclick = () => {
