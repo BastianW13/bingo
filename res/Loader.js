@@ -48,6 +48,14 @@ class Loader
 
   static setupWindowEvents()
   {
+    let putLocalStorage = () => {
+      localStorage.setItem('BingoGame.numbers', JSON.stringify([...BingoGame.numbers]));
+      localStorage.setItem('BingoGame.currentNumber', BingoGame.currentNumber);
+    }
+
+    window.onblur = putLocalStorage;
+    window.onunload = putLocalStorage;
+
     window.onresize = () => {
       CVS_MAIN.width = document.documentElement.clientWidth;
       CVS_MAIN.height = document.documentElement.clientHeight;
