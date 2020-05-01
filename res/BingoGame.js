@@ -41,14 +41,14 @@ class BingoGame
 
   static initTips()
   {
-    this.tips.set(1, 'One, eins, uun, een, Zakje zweet');
+    this.tips.set(1, 'Numero uno, one, eins, uun. Een, Zakje zweet');
     this.tips.set(2, 'One little duck, quack');
     this.tips.set(3, 'One little flea, Number three');
     this.tips.set(4, 'One cute whore on the floor, number 4');
-    this.tips.set(5, 'Just 5! "Just 5?" Just 5!');
+    this.tips.set(5, 'Just 5! "Just 5?" 5!');
     this.tips.set(6, 'Ganz allein die sechs');
     this.tips.set(7, 'Jugs to heaven');
-    this.tips.set(8, 'ruja dupra dopre dupa, one fat lady number eight');
+    this.tips.set(8, 'Ruja dupa dobre dupa, one fat lady number eight');
     this.tips.set(9, 'What does the german virgin say?');
     this.tips.set(10, 'Downing street number ten! Insane in the membrane.');
     this.tips.set(11, 'Legs eleven');
@@ -65,6 +65,9 @@ class BingoGame
     this.tips.set(22, 'Two little ducks, quack quack');
     this.tips.set(23, 'A duck and a flea');
     this.tips.set(24, 'Jack Bauer');
+    this.tips.set(26, 'Chicks with dicks');
+    this.tips.set(30, 'Squirty thirty');
+    this.tips.set(32, 'Avian flu');
     this.tips.set(33, 'Two little fleas');
     this.tips.set(34, 'I caught a Haifisch');
     this.tips.set(40, 'Firsich');
@@ -79,11 +82,12 @@ class BingoGame
     this.tips.set(61, 'Oscar pistorious with a gun');
     this.tips.set(63, 'Tits McGee');
     this.tips.set(64, 'NINTENDO.., "64"');
+    this.tips.set(66, 'Clickety click');
     this.tips.set(69, 'Dinner for two with a hairy view. / Anyway you lick at it');
     this.tips.set(74, 'Deutschland ist Weltmeister');
     this.tips.set(77, 'All the 7s. / Sunset strip');
-    this.tips.set(80, "Don't sleep with Caty");
-    this.tips.set(88, 'Ruja dupra dopre dupa, two fat ladys');
+    this.tips.set(80, "Don't sleep with Catie");
+    this.tips.set(88, 'Ruja dupa dobre dupa, two fat ladys');
     this.tips.set(90, 'Deutschland ist Weltmeister');
   }
 
