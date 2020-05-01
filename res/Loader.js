@@ -2,6 +2,7 @@ class Loader
 {
   static async init()
   {
+    console.log('Latest branch: local-storage');
     await this.createGlobals();
     await Promise.all([
       this.addJS('./res/BingoTicket.js'),
