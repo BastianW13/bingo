@@ -21,8 +21,8 @@ class BingoGame
     this.direction = 'ttb';
     this.min = 1;
     this.range = 90;
-    this.numbers = new Set();
-    this.currentNumber = null;
+    this.numbers = new Set(JSON.parse(localStorage.getItem('BingoGame.numbers')));
+    this.currentNumber = JSON.parse(localStorage.getItem('BingoGame.currentNumber'));
     this.xStep = 0;
     this.yStep = 0;
 
@@ -36,6 +36,7 @@ class BingoGame
 
     this.initCanvas();
     this.initTips();
+    this.redraw();
   }
 
   static initTips()
