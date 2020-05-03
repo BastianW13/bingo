@@ -247,7 +247,6 @@ class BingoGame
 
   static output()
   {
-    CTX_MAIN.clearRect(0, 0, CVS_MAIN.width, CVS_MAIN.height);
     let xStart = settingsGame.xStart();
     let yStart = settingsGame.yStart();
 
