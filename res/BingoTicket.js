@@ -24,18 +24,22 @@ class BingoTicket
     this.buffer.width = 9 * settingsTicket.xStep();
     this.buffer.height = 3 * settingsTicket.yStep();
     this.bufferCtx = this.buffer.getContext('2d');
+    this.currentSeed = JSON.parse(localStorage.getItem('BingoTicket.currentSeed')) ||  null;
+    if (this.currentSeed)
+    {
+      let inpID = document.getElementById('inpID');
+      inpID.placeholder = 'ID: ' + this.currentSeed;
+      this.newTicket(this.currentSeed);
+    }
   }
 
   static newTicket(seed = 0)
   {
     if (seed) RNG.setSeed(seed);
-    else
-    {
-      seed = RNG.setSeed();
-    }
+    else seed = RNG.setSeed();
+    this.currentSeed = seed;
     this.createNumbers();
     this.draw();
-    this.output();
     return seed;
   }
 
@@ -190,16 +194,91 @@ class BingoTicket
 
   static output()
   {
-    CTX_MAIN.clearRect(0, 0, CVS_MAIN.width, CVS_MAIN.height);
     CTX_MAIN.drawImage(this.buffer, settingsTicket.xStart(), settingsTicket.yStart());
   }
 }
 
 
+class Marker
+{
+  static init()
+  {
+    this.positions = JSON.parse(localStorage.getItem('Marker.positions'))|| new Array();
+    this.buffer = document.createElement('canvas');
+    this.bufferCtx = this.buffer.getContext('2d');
+    this.initCanvas();
+    this.redraw();
+  }
+
+  static clear()
+  {
+    this.positions.length = 0;
+    this.bufferCtx.clearRect(0, 0, this.buffer.width, this.buffer.height);
+  }
+
+  static initCanvas()
+  {
+    this.bufferCtx.clearRect(0, 0, this.buffer.width, this.buffer.height);
+    this.buffer.width = 9 * settingsTicket.xStep();
+    this.buffer.height = 3 * settingsTicket.yStep();
+  }
+
+  static addMarker(x, y)
+  {
+    let indexX = Math.floor((x - settingsTicket.xStart()) / settingsTicket.xStep());
+    let indexY = Math.floor((y - settingsTicket.yStart()) / settingsTicket.yStep());
+    let pos = {
+      indexX: indexX,
+      indexY: indexY
+    };
+    if (this.hasPosition(indexX, indexY)) return;
+    this.positions.push(pos);
+    this.drawMarker(indexX, indexY);
+  }
+
+  static hasPosition(indexX, indexY)
+  {
+    let pos;
+    for (let i = 0; i < this.positions.length; i++)
+    {
+      pos = this.positions[i];
+      if (pos.indexX === indexX && pos.indexY === indexY) return true;
+    }
+    return false;
+  }
+
+  static drawMarker(indexX, indexY)
+  {
+    let xStep = settingsTicket.xStep();
+    let yStep = settingsTicket.yStep();
+    this.bufferCtx.save();
+    this.bufferCtx.strokeStyle = 'white';
+    this.bufferCtx.beginPath();
+    this.bufferCtx.moveTo(indexX * xStep, (indexY + 1) * yStep);
+    this.bufferCtx.lineTo((indexX + 1) * xStep, indexY * yStep);
+    this.bufferCtx.stroke();
+    this.bufferCtx.restore();
+  }
+
+  static redraw()
+  {
+    this.initCanvas();
+    this.positions.forEach(pos => {
+      this.drawMarker(pos.indexX, pos.indexY);
+    });
+  }
+
+  static output()
+  {
+    CTX_MAIN.drawImage(this.buffer, settingsTicket.xStart(), settingsTicket.yStart());
+  }
+}
+
 class RNG
 {
   static setSeed(seed = Date.now())
 	{
+    seed %= 1000000000;
 		return this.seed = seed;
 	}
 
