@@ -2,7 +2,7 @@ class Loader
 {
   static async init()
   {
-    console.log('Latest branch: local-storage');
+    console.log('Latest branch: ticket-marker');
     await this.createGlobals();
     await Promise.all([
       this.addJS('./res/BingoTicket.js'),
@@ -10,6 +10,18 @@ class Loader
     ]);
     BingoTicket.init();
     BingoGame.init();
+    Marker.init();
+    OUTPUT = () => {
+      CTX_MAIN.clearRect(0, 0, CVS_MAIN.width, CVS_MAIN.height);
+      if (ACTIVE_MODE === MODES[0])
+      {
+        BingoTicket.output();
+        Marker.output();
+      } else if (ACTIVE_MODE === MODES[1])
+      {
+        BingoGame.output();
+      }
+    }
   }
 
   static createGlobals()
@@ -23,6 +35,7 @@ class Loader
       CVS_MAIN.height = document.documentElement.clientHeight;
       window.MODES = ['Ticket', 'Game'];
       window.ACTIVE_MODE = MODES[0];
+      window.OUTPUT = () => {};
       resolve();
     })
   }
@@ -45,6 +58,7 @@ class Loader
     this.setupWindowEvents();
     this.setupButtonEvents();
     this.setupMouseEvents();
+    OUTPUT();
   }
 
   static setupWindowEvents()
@@ -52,6 +66,8 @@ class Loader
     let putLocalStorage = () => {
       localStorage.setItem('BingoGame.numbers', JSON.stringify([...BingoGame.numbers]));
       localStorage.setItem('BingoGame.currentNumber', BingoGame.currentNumber);
+      localStorage.setItem('BingoTicket.currentSeed', BingoTicket.currentSeed);
+      localStorage.setItem('Marker.positions', JSON.stringify(Marker.positions));
     }
 
     window.onblur = putLocalStorage;
@@ -60,15 +76,10 @@ class Loader
     window.onresize = () => {
       CVS_MAIN.width = document.documentElement.clientWidth;
       CVS_MAIN.height = document.documentElement.clientHeight;
-      if (ACTIVE_MODE === MODES[0])
-      {
-        BingoTicket.draw();
-        BingoTicket.output();
-      } else if (ACTIVE_MODE === MODES[1])
-      {
-        BingoGame.redraw();
-        BingoGame.output();
-      }
+      BingoTicket.draw();
+      Marker.redraw();
+      BingoGame.redraw();
+      OUTPUT();
     }
   }
 
@@ -91,32 +102,41 @@ class Loader
       {
         let id = BingoTicket.newTicket(inpID.value || null);
         inpID.placeholder = "ID: " + id;
+        Marker.clear();
+        Marker.redraw();
+        OUTPUT();
       } else
       {
         alert('Not a valid ID');
       }
     }
 
+    btnClearMarker.onclick = () => {
+      Marker.clear();
+      Marker.redraw();
+      OUTPUT();
+    }
+
     btnNewGame.onclick = () => {
       BingoGame.restart();
-      BingoGame.output();
+      OUTPUT();
     }
 
     btnDrawNumber.onclick = () => {
       BingoGame.drawNumber();
-      BingoGame.output();
+      OUTPUT();
     }
 
     btnSwitchDirection.onclick = () => {
       BingoGame.switchDirection();
       BingoGame.redraw();
-      BingoGame.output();
+      OUTPUT();
     }
 
     btnSwitchView.onclick = () => {
       BingoGame.switchMode();
       BingoGame.redraw();
-      BingoGame.output();
+      OUTPUT();
     }
 
     btnChangeMode.onclick = () => {
@@ -132,8 +152,6 @@ class Loader
         {
           cGame[i].style.display = 'block';
         }
-        CTX_MAIN.clearRect(0, 0, CVS_MAIN.width, CVS_MAIN.height);
-        BingoGame.output();
         ACTIVE_MODE = MODES[1];
       } else if (ACTIVE_MODE === MODES[1])
       {
@@ -145,35 +163,28 @@ class Loader
         {
           cTicket[i].style.display = 'block';
         }
-        CTX_MAIN.clearRect(0, 0, CVS_MAIN.width, CVS_MAIN.height);
-        BingoTicket.output();
         ACTIVE_MODE = MODES[0];
       }
+      OUTPUT();
     }
   }
 
   static setupMouseEvents()
   {
-    CVS_MAIN.onclick = () => {
-      if (ACTIVE_MODE === MODES[0])
+    CVS_MAIN.onclick = (ev) => {
+      if (ACTIVE_MODE === MODES[0] && BingoTicket.currentSeed)
       {
-
+        let x = ev.clientX;
+        let y = ev.clientY;
+        Marker.addMarker(x, y);
       } else if (ACTIVE_MODE === MODES[1])
       {
         BingoGame.drawNumber();
-        BingoGame.output();
       }
+      OUTPUT()
     }
     CVS_MAIN.ontouch = () => {
-      if (ACTIVE_MODE === MODES[0])
-      {
-
-      } else if (ACTIVE_MODE === MODES[1])
-      {
-        BingoGame.drawNumber();
-        BingoGame.output();
-      }
-
+      // Mobile seems to support onclick, so for now this will not be implementet seperately
     }
   }
 }
