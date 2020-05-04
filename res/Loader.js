@@ -2,7 +2,7 @@ class Loader
 {
   static async init()
   {
-    console.log('Latest branch: ticket-marker');
+    console.log('Latest branch: input-fix');
     await this.createGlobals();
     await Promise.all([
       this.addJS('./res/BingoTicket.js'),
@@ -167,17 +167,35 @@ class Loader
       }
       OUTPUT();
     }
+
+    inpID.onkeyup = (ev) => {
+      if (ev.code === 'Enter' || ev.keyCode === 13)
+      {
+        ev.preventDefault();
+        if (inpID.checkValidity())
+        {
+          let id = BingoTicket.newTicket(inpID.value || null);
+          inpID.placeholder = "ID: " + id;
+          Marker.clear();
+          Marker.redraw();
+          OUTPUT();
+        } else
+        {
+          alert('Not a valid ID');
+        }
+      }
+    }
   }
 
   static setupMouseEvents()
   {
     CVS_MAIN.onclick = (ev) => {
+      let x = ev.clientX;
+      let y = ev.clientY;
       if (ACTIVE_MODE === MODES[0] && BingoTicket.currentSeed)
       {
-        let x = ev.clientX;
-        let y = ev.clientY;
         Marker.addMarker(x, y);
-      } else if (ACTIVE_MODE === MODES[1])
+      } else if (ACTIVE_MODE === MODES[1] && BingoGame.isHit(x, y))
       {
         BingoGame.drawNumber();
       }
