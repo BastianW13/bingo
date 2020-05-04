@@ -11,12 +11,14 @@ const settingsGame =
   font: () => {return settingsGame.yStep() *  3/5 + "px serif"},
   fontBall: () => {return settingsGame.yStep() * 1.5 + "px serif"},
   colors: ['rgb(28,90,249)', 'rgb(212,145,173)', 'rgb(255,85,10)', 'rgb(255,243,25)', 'rgb(2,118,1)'],
+  timeOut: 750,
 }
 
 class BingoGame
 {
   static init()
   {
+    this.lastTime = Date.now();
     this.mode = 'modeAll';
     this.direction = 'ttb';
     this.min = 1;
@@ -126,11 +128,37 @@ class BingoGame
     this.currentNumber = null;
     this.bufferNumbersCtx.clearRect(0, 0, this.bufferNumbers.width, this.bufferNumbers.height);
     this.bufferBallCtx.clearRect(0, 0, this.bufferBall.width, this.bufferBall.height);
+    this.drawBall('gray');
+  }
+
+  static isHit(x, y)
+  {
+    let dx, dy;
+    if (this.mode === 'modeAll')
+    {
+      dx = this.bufferBall.width/2 + this.bufferNumbers.width + settingsGame.xStart() - x;
+      dy = this.bufferBall.height/4 + settingsGame.yStart() - y;
+      if (Math.hypot(dx, dy) <= this.bufferBall.height/4)
+      {
+        return true;
+      }
+    } else if (this.mode === 'modeBall')
+    {
+      dx = this.bufferBall.width/2 + settingsGame.xStart() - x;
+      dy = this.bufferBall.height/4 + settingsGame.yStart() - y;
+      if (Math.hypot(dx, dy) <= this.bufferBall.height/4)
+      {
+        return true;
+      }
+    }
+    return false;
   }
 
   static drawNumber()
   {
     if (this.numbers.size >= 90) return;
+    if (Date.now() - this.lastTime <= settingsGame.timeOut) return;
+    this.lastTime = Date.now();
     let number;
     do {
       number = Math.floor(Math.random() * this.range) + this.min;
@@ -228,7 +256,11 @@ class BingoGame
     this.bufferNumbersCtx.restore();
 
     // Current number
-    if (!this.currentNumber) return;
+    if (!this.currentNumber)
+    {
+      this.drawBall('gray');
+      return;
+    }
     color = color = settingsGame.colors[Math.floor((this.currentNumber-1)/20)];
     this.bufferBallCtx.save();
     this.bufferBallCtx.clearRect(0, 0, this.bufferBall.width, this.bufferBall.height);
