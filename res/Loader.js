@@ -2,7 +2,7 @@ class Loader
 {
   static async init()
   {
-    console.log('Latest branch: input-fix');
+    console.log('Latest branch: marker-toggle');
     await this.createGlobals();
     await Promise.all([
       this.addJS('./res/BingoTicket.js'),
@@ -34,7 +34,7 @@ class Loader
       CVS_MAIN.width = document.documentElement.clientWidth;
       CVS_MAIN.height = document.documentElement.clientHeight;
       window.MODES = ['Ticket', 'Game'];
-      window.ACTIVE_MODE = MODES[0];
+      window.ACTIVE_MODE = localStorage.getItem('ACTIVE_MODE') || MODES[0];
       window.OUTPUT = () => {};
       resolve();
     })
@@ -58,6 +58,7 @@ class Loader
     this.setupWindowEvents();
     this.setupButtonEvents();
     this.setupMouseEvents();
+    this.activateButtons();
     OUTPUT();
   }
 
@@ -67,7 +68,10 @@ class Loader
       localStorage.setItem('BingoGame.numbers', JSON.stringify([...BingoGame.numbers]));
       localStorage.setItem('BingoGame.currentNumber', BingoGame.currentNumber);
       localStorage.setItem('BingoTicket.currentSeed', BingoTicket.currentSeed);
-      localStorage.setItem('Marker.positions', JSON.stringify(Marker.positions));
+      localStorage.setItem('Marker.positions', JSON.stringify([...Marker.positions]));
+      localStorage.setItem('ACTIVE_MODE', ACTIVE_MODE);
+      localStorage.setItem('BingoGame.mode', BingoGame.mode);
+      localStorage.setItem('BingoGame.direction', BingoGame.direction);
     }
 
     window.onblur = putLocalStorage;
@@ -144,26 +148,12 @@ class Loader
       let cGame = document.getElementsByClassName('cGame');
       if (ACTIVE_MODE === MODES[0])
       {
-        for (let i = 0; i < cTicket.length; i++)
-        {
-          cTicket[i].style.display = 'none';
-        }
-        for (let i = 0; i < cGame.length; i++)
-        {
-          cGame[i].style.display = 'block';
-        }
         ACTIVE_MODE = MODES[1];
+        this.activateButtons();
       } else if (ACTIVE_MODE === MODES[1])
       {
-        for (let i = 0; i < cGame.length; i++)
-        {
-          cGame[i].style.display = 'none';
-        }
-        for (let i = 0; i < cTicket.length; i++)
-        {
-          cTicket[i].style.display = 'block';
-        }
         ACTIVE_MODE = MODES[0];
+        this.activateButtons();
       }
       OUTPUT();
     }
@@ -203,6 +193,34 @@ class Loader
     }
     CVS_MAIN.ontouch = () => {
       // Mobile seems to support onclick, so for now this will not be implementet seperately
+    }
+  }
+
+  static activateButtons()
+  {
+    let cTicket = document.getElementsByClassName('cTicket');
+    let cGame = document.getElementsByClassName('cGame');
+    document.getElementById('btnChangeMode').style.display = 'block';
+    if (ACTIVE_MODE === MODES[0])
+    {
+      for (let i = 0; i < cTicket.length; i++)
+      {
+        cTicket[i].style.display = 'block';
+      }
+      for (let i = 0; i < cGame.length; i++)
+      {
+        cGame[i].style.display = 'none';
+      }
+    } else if (ACTIVE_MODE === MODES[1])
+    {
+      for (let i = 0; i < cGame.length; i++)
+      {
+        cGame[i].style.display = 'block';
+      }
+      for (let i = 0; i < cTicket.length; i++)
+      {
+        cTicket[i].style.display = 'none';
+      }
     }
   }
 }
