@@ -203,7 +203,7 @@ class Marker
 {
   static init()
   {
-    this.positions = JSON.parse(localStorage.getItem('Marker.positions'))|| new Array();
+    this.positions = new Set(JSON.parse(localStorage.getItem('Marker.positions')));
     this.buffer = document.createElement('canvas');
     this.bufferCtx = this.buffer.getContext('2d');
     this.initCanvas();
@@ -212,7 +212,7 @@ class Marker
 
   static clear()
   {
-    this.positions.length = 0;
+    this.positions.clear();
     this.bufferCtx.clearRect(0, 0, this.buffer.width, this.buffer.height);
   }
 
@@ -231,20 +231,33 @@ class Marker
       indexX: indexX,
       indexY: indexY
     };
-    if (this.hasPosition(indexX, indexY)) return;
-    this.positions.push(pos);
+    let obj;
+    if ((obj = this.getPosition(indexX, indexY)).has)
+    {
+      this.positions.delete(obj.pos);
+      this.redraw();
+      return;
+    }
+    this.positions.add(pos);
     this.drawMarker(indexX, indexY);
   }
 
-  static hasPosition(indexX, indexY)
+  static getPosition(indexX, indexY)
   {
-    let pos;
-    for (let i = 0; i < this.positions.length; i++)
-    {
-      pos = this.positions[i];
-      if (pos.indexX === indexX && pos.indexY === indexY) return true;
-    }
-    return false;
+    let obj = {
+      has: false,
+      pos: null
+    };
+    this.positions.forEach(pos => {
+      if (pos.indexX === indexX && pos.indexY === indexY)
+      {
+        obj = {
+          has: true,
+          pos: pos,
+        };
+      }
+    })
+    return obj;
   }
 
   static drawMarker(indexX, indexY)
