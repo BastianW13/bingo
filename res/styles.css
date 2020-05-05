@@ -37,6 +37,7 @@ body
   opacity: 0.5;
   background: rgb(221, 221, 221);
   cursor: pointer;
+  display: none;
 }
 
 #inpID

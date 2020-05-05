@@ -19,8 +19,8 @@ class BingoGame
   static init()
   {
     this.lastTime = Date.now();
-    this.mode = 'modeAll';
-    this.direction = 'ttb';
+    this.mode = localStorage.getItem('BingoGame.mode') || 'modeAll';
+    this.direction = localStorage.getItem('BingoGame.direction') || 'ttb';
     this.min = 1;
     this.range = 90;
     this.numbers = new Set(JSON.parse(localStorage.getItem('BingoGame.numbers')));
